@@ -1,9 +1,12 @@
 package com.qpa.dto;
 
-import java.util.List;
 import java.util.Set;
 
-import com.qpa.entity.*;
+import com.qpa.entity.PriceType;
+import com.qpa.entity.SpotStatus;
+import com.qpa.entity.SpotType;
+import com.qpa.entity.UserInfo;
+import com.qpa.entity.VehicleType;
 
 public class SpotResponseDTO {
 	private Long spotId;
@@ -12,19 +15,21 @@ public class SpotResponseDTO {
 	private SpotStatus status;
 	private boolean isActive;
 	private LocationDTO location;
-	private User owner;
+	private UserInfo owner;
 	private boolean hasEVCharging;
 	private double price;
 	private PriceType priceType;
 	private Double rating;
 	private byte[] spotImage;
 	private Set<VehicleType> supportedVehicleTypes;
-	
+
 	public SpotResponseDTO() {
 
 	}
 
-	public SpotResponseDTO(Long spotId, String spotNumber, SpotType spotType, SpotStatus status, boolean isActive, LocationDTO location, User owner, boolean hasEVCharging, double price, PriceType priceType, Double rating, byte[] spotImage, Set<VehicleType> supportedVehicleTypes) {
+	public SpotResponseDTO(Long spotId, String spotNumber, SpotType spotType, SpotStatus status, boolean isActive,
+			LocationDTO location, UserInfo owner, boolean hasEVCharging, double price, PriceType priceType,
+			Double rating, byte[] spotImage, Set<VehicleType> supportedVehicleTypes) {
 		this.spotId = spotId;
 		this.spotNumber = spotNumber;
 		this.spotType = spotType;
@@ -128,11 +133,11 @@ public class SpotResponseDTO {
 		this.supportedVehicleTypes = supportedVehicleTypes;
 	}
 
-	public User getOwner() {
+	public UserInfo getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(UserInfo owner) {
 		this.owner = owner;
 	}
 

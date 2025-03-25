@@ -1,14 +1,10 @@
 package com.qpa.dto;
 
-import java.util.Map;
-
-import com.qpa.entity.SpotType;
-
 public class SpotStatistics {
-    private long totalSpots;
-    private long availableSpots;
-    private long unavailableSpots;
-    
+	private long totalSpots;
+	private long availableSpots;
+	private long unavailableSpots;
+
 	public SpotStatistics() {
 
 	}

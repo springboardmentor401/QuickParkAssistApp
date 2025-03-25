@@ -1,11 +1,11 @@
 package com.qpa.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -38,7 +38,7 @@ public class Spot {
 	@ManyToOne
 	@JoinColumn(name = "owner_id", nullable = false)
 	@JsonBackReference
-	private User owner;
+	private UserInfo owner;
 
 	@Enumerated(EnumType.STRING)
 	private SpotType spotType;
@@ -93,7 +93,7 @@ public class Spot {
 
 	}
 
-	public Spot(Long spotId, String spotNumber, User owner, SpotType spotType, SpotStatus status, boolean isActive, Location location, boolean hasEVCharging, double price, PriceType priceType, Double rating, LocalDateTime createdAt, LocalDateTime updatedAt, byte[] spotImage, Set<VehicleType> supportedVehicleTypes) {
+	public Spot(Long spotId, String spotNumber, UserInfo owner, SpotType spotType, SpotStatus status, boolean isActive, Location location, boolean hasEVCharging, double price, PriceType priceType, Double rating, LocalDateTime createdAt, LocalDateTime updatedAt, byte[] spotImage, Set<VehicleType> supportedVehicleTypes) {
 		this.spotId = spotId;
 		this.spotNumber = spotNumber;
 		this.owner = owner;
@@ -215,11 +215,11 @@ public class Spot {
 		this.supportedVehicleTypes = supportedVehicleTypes;
 	}
 
-	public User getOwner() {
+	public UserInfo getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(UserInfo owner) {
 		this.owner = owner;
 	}
 

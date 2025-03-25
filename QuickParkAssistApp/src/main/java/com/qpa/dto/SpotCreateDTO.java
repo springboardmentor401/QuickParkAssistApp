@@ -1,6 +1,14 @@
 package com.qpa.dto;
 
-import com.qpa.entity.*;
+import java.util.Set;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.qpa.entity.PriceType;
+import com.qpa.entity.SpotStatus;
+import com.qpa.entity.SpotType;
+import com.qpa.entity.UserInfo;
+import com.qpa.entity.VehicleType;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -8,11 +16,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.web.multipart.MultipartFile;
 
 public class SpotCreateDTO {
 
@@ -24,7 +27,7 @@ public class SpotCreateDTO {
 	@NotNull(message = "Spot type is required")
 	private SpotType spotType;
 	
-	private User owner;
+	private UserInfo owner;
 
 	@Valid
 	@NotNull(message = "Location details are required")
@@ -114,11 +117,11 @@ public class SpotCreateDTO {
 		this.supportedVehicle = supportedVehicle;
 	}
 
-	public User getOwner() {
+	public UserInfo getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(UserInfo owner) {
 		this.owner = owner;
 	}
 

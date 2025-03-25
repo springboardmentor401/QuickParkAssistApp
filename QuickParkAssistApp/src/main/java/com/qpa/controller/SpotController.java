@@ -1,17 +1,21 @@
 package com.qpa.controller;
 
-
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Collections;
-
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qpa.dto.SpotCreateDTO;
@@ -20,12 +24,9 @@ import com.qpa.dto.SpotSearchCriteria;
 import com.qpa.dto.SpotStatistics;
 import com.qpa.entity.VehicleType;
 import com.qpa.exception.InvalidEntityException;
-import com.qpa.exception.ResourceNotFoundException;
 import com.qpa.service.SpotService;
 
 import jakarta.validation.Valid;
-
-
 
 //@Validated
 @RestController
@@ -34,11 +35,9 @@ public class SpotController {
 
     private final SpotService spotService;
 
-    @Autowired
     public SpotController(SpotService spotService) {
         this.spotService = spotService;
     }
-
 
     @PostMapping("/create")
     public ResponseEntity<SpotResponseDTO> createSpot(
@@ -82,7 +81,6 @@ public class SpotController {
     public ResponseEntity<SpotResponseDTO> toggleSpotActivation(@PathVariable Long spotId) {
         return ResponseEntity.ok(spotService.toggleSpotActivation(spotId));
     }
-
 
     // Vehicle Owner endpoints
     @PatchMapping("/{spotId}/rate")
@@ -129,24 +127,24 @@ public class SpotController {
     // redundant
     @GetMapping("/availableSpots")
     public ResponseEntity<List<SpotResponseDTO>> getAvailableSpots() {
-    	return new ResponseEntity<>(spotService.getAvailableSpots(), HttpStatus.OK);
+        return new ResponseEntity<>(spotService.getAvailableSpots(), HttpStatus.OK);
     }
-    
-    
+
     @GetMapping("/by-booking/{bookingId}")
-    public ResponseEntity<SpotResponseDTO> getSpotByBookingId(@PathVariable long bookingId) throws InvalidEntityException{
-         
+    public ResponseEntity<SpotResponseDTO> getSpotByBookingId(@PathVariable long bookingId)
+            throws InvalidEntityException {
+
         return new ResponseEntity<>(spotService.getSpotByBookingId(bookingId), HttpStatus.OK);
 
     }
-    
+
     @GetMapping("/booked")
     public ResponseEntity<List<SpotResponseDTO>> getBookedSpots() {
 
         return new ResponseEntity<>(spotService.getBookedSpots(), HttpStatus.OK);
 
     }
-    
+
     @GetMapping("/by-booking")
     public ResponseEntity<List<SpotResponseDTO>> getBookedSpotsByStartAndEndDate(
             @RequestParam("startDate") String startDateStr,
@@ -158,7 +156,5 @@ public class SpotController {
         return new ResponseEntity<>(spotService.getAvailableSpotsByStartAndEndDate(startDate, endDate), HttpStatus.OK);
 
     }
-    
-
 
 }

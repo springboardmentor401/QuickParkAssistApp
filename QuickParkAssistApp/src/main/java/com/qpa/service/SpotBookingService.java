@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.qpa.entity.PriceType;
-import com.qpa.entity.SpotBookingInfo;
 import com.qpa.entity.Spot;
+import com.qpa.entity.SpotBookingInfo;
 import com.qpa.entity.SpotStatus;
 import com.qpa.entity.Vehicle;
 import com.qpa.entity.VehicleType;
@@ -21,6 +21,7 @@ import com.qpa.exception.InvalidEntityException;
 import com.qpa.repository.SpotBookingInfoRepository;
 import com.qpa.repository.SpotRepository;
 import com.qpa.repository.VehicleRepository;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -186,13 +187,22 @@ public class SpotBookingService {
             // getEmail()
             String userEmail = savedBooking.getVehicle().getUserObj().getEmail();
             String subject = "Booking Confirmation - Spot ID: " + spotId;
-            String body = "Dear User,\n\n" +
-                    "Your booking for spot " + spotId + " has been confirmed.\n" +
-                    "Booking Details:\n" +
-                    "Start: " + savedBooking.getStartDate() + " " + savedBooking.getStartTime() + "\n" +
-                    "End: " + savedBooking.getEndDate() + " " + savedBooking.getEndTime() + "\n" +
-                    "Vehicle: " + registrationNumber + "\n" +
-                    "Thank you for using our service!";
+            String body = """
+                    Dear User,
+
+                    Your booking for spot %d has been confirmed.
+                    Booking Details:
+                    Start: %s %s
+                    End: %s %s
+                    Vehicle: %s
+                    Thank you for using our service!
+                    """.formatted(
+                    spotId,
+                    savedBooking.getStartDate(),
+                    savedBooking.getStartTime(),
+                    savedBooking.getEndDate(),
+                    savedBooking.getEndTime(),
+                    registrationNumber);
             emailService.sendSimpleMail(userEmail, subject, body);
         } catch (Exception e) {
             // Log the error but don’t throw to avoid rolling back the transaction
@@ -255,14 +265,15 @@ public class SpotBookingService {
         return bookings;
     }
 
-
-    public List<SpotBookingInfo> getCancelledBookingsByContactNumber(String contactNumber) throws InvalidEntityException {
+    public List<SpotBookingInfo> getCancelledBookingsByContactNumber(String contactNumber)
+            throws InvalidEntityException {
         if (contactNumber == null || contactNumber.trim().isEmpty()) {
             throw new InvalidEntityException("Contact number cannot be null or empty.");
         }
 
-        List<SpotBookingInfo> cancelledBookings = spotBookingRepository.findCancelledBookingsByContactNumber(contactNumber);
-        
+        List<SpotBookingInfo> cancelledBookings = spotBookingRepository
+                .findCancelledBookingsByContactNumber(contactNumber);
+
         if (cancelledBookings.isEmpty()) {
             throw new InvalidEntityException("No cancelled bookings found for contact number: " + contactNumber);
         }
@@ -365,8 +376,10 @@ public class SpotBookingService {
             // Retrieve the user's email (adjust based on your entity relationships)
             String userEmail = booking.getVehicle().getUserObj().getEmail(); // Example path, modify as needed
             String subject = "Booking Cancellation - Spot ID: " + spot.getSpotId();
-            String body = "Dear User,\n\n" +
-                    "Your booking for spot " + spot.getSpotId() + " has been canceled.\n" +
+            String body = """
+                    Dear User,
+
+                    Your booking for spot """ + spot.getSpotId() + " has been canceled.\n" +
                     "Booking Details:\n" +
                     "Start: " + booking.getStartDate() + " " + booking.getStartTime() + "\n" +
                     "End: " + booking.getEndDate() + " " + booking.getEndTime() + "\n" +
@@ -384,7 +397,6 @@ public class SpotBookingService {
         booking.setStatus("cancelled");
         // Step 6: Delete only the booking details
         spotBookingRepository.save(booking);
-      
 
     }
 
